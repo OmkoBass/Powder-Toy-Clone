@@ -2,6 +2,7 @@ const materials = {
   void: 0,
   wall: 1,
   sand: 2,
+  fluid: 3,
 };
 
 let selected = materials.sand;
@@ -22,12 +23,9 @@ let grid = [];
 
 function handleSwitchMaterial(material) {
   selected = materials[material];
-
-  if (selected === materials.wall) {
-  }
 }
 
-function preload() {
+function handleResetGrid() {
   grid = Array(sizeX)
     .fill()
     .map((_, i) =>
@@ -47,6 +45,10 @@ function preload() {
       }
     }
   }
+}
+
+function preload() {
+  handleResetGrid();
 }
 
 function setup() {
@@ -86,12 +88,41 @@ function draw() {
         }
       }
 
+      // Moving of liquids
+      if (grid[i][j].type === materials.fluid) {
+        if (grid[i][j + 1].type === materials.void) {
+          grid[i][j + 1].type = materials.fluid;
+          grid[i][j].toClear = true;
+        } else if (
+          grid[i - 1][j + 1].type === materials.void &&
+          grid[i - 1][j].type === materials.void
+        ) {
+          grid[i - 1][j + 1].type = materials.fluid;
+          grid[i][j].toClear = true;
+        } else if (
+          grid[i + 1][j + 1].type === materials.void &&
+          grid[i + 1][j].type === materials.void
+        ) {
+          grid[i + 1][j + 1].type = materials.fluid;
+          grid[i][j].toClear = true;
+        } else if (grid[i - 1][j].type === materials.void) {
+          grid[i - 1][j].type = materials.fluid;
+          grid[i][j].toClear = true;
+        } else if (grid[i + 1][j].type === materials.void) {
+          grid[i + 1][j].type = materials.fluid;
+          grid[i][j].toClear = true;
+        }
+      }
+
       // Filling the particles
       if (grid[i][j].type === materials.wall) {
         fill(255);
         rect(i * size, j * size, size, size);
       } else if (grid[i][j].type === materials.sand) {
         fill(255, 255, 0);
+        rect(i * size, j * size, size, size);
+      } else if (grid[i][j].type === materials.fluid) {
+        fill(0, 0, 255);
         rect(i * size, j * size, size, size);
       } else if (grid[i][j].toClear) {
         fill(255, 255, 0);

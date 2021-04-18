@@ -4,6 +4,8 @@ const materials = {
   sand: 2,
 };
 
+let selected = materials.sand;
+
 class Tile {
   constructor(position) {
     this.position = position;
@@ -17,6 +19,13 @@ const sizeY = 120;
 const size = 5;
 
 let grid = [];
+
+function handleSwitchMaterial(material) {
+  selected = materials[material];
+
+  if (selected === materials.wall) {
+  }
+}
 
 function preload() {
   grid = Array(sizeX)
@@ -62,10 +71,16 @@ function draw() {
         if (grid[i][j + 1].type === materials.void) {
           grid[i][j + 1].type = materials.sand;
           grid[i][j].toClear = true;
-        } else if (grid[i - 1][j + 1].type === materials.void) {
+        } else if (
+          grid[i - 1][j + 1].type === materials.void &&
+          grid[i - 1][j].type === materials.void
+        ) {
           grid[i - 1][j + 1].type = materials.sand;
           grid[i][j].toClear = true;
-        } else if (grid[i + 1][j + 1].type === materials.void) {
+        } else if (
+          grid[i + 1][j + 1].type === materials.void &&
+          grid[i + 1][j].type === materials.void
+        ) {
           grid[i + 1][j + 1].type = materials.sand;
           grid[i][j].toClear = true;
         }
@@ -97,7 +112,7 @@ function mousePressed() {
     coordinateY <= sizeY
   ) {
     if (grid[coordinateX][coordinateY].type === materials.void) {
-      grid[coordinateX][coordinateY].type = materials.sand;
+      grid[coordinateX][coordinateY].type = selected;
     }
   }
 }
@@ -113,7 +128,7 @@ function mouseDragged() {
     coordinateY <= sizeY
   ) {
     if (grid[coordinateX][coordinateY].type === materials.void) {
-      grid[coordinateX][coordinateY].type = materials.sand;
+      grid[coordinateX][coordinateY].type = selected;
     }
   }
 }

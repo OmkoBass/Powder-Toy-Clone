@@ -1,0 +1,23 @@
+{
+  "name": "power-toy-clone",
+  "version": "1.0.0",
+  "description": "Powder Toy clone I made, one of my favorite projects showing how physics are a beautiful thing.",
+  "main": "app.js",
+  "dependencies": {
+    "mini.css": "^3.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OmkoBass/Power-Toy-Clone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OmkoBass/Power-Toy-Clone/issues"
+  },
+  "homepage": "https://github.com/OmkoBass/Power-Toy-Clone#readme"
+}

@@ -4,12 +4,12 @@ Powder Toy clone I made, one of my favorite projects showing how physics are a b
 I'll implement more and more materials and how they work in the world.
 
 Currently:
--Sand
--Wall
--Water
+ - Sand
+ - Wall
+ - Water
 
 To be implemented:
--Smoke
--Fire
--Wood
--Acid
+ - Smoke
+ - Fire
+ - Wood
+ - Acid

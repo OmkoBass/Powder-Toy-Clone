@@ -8,10 +8,28 @@ const materials = {
 let selected = materials.sand;
 
 class Tile {
-  constructor(position) {
-    this.position = position;
+  constructor(i, j) {
+    this.i = i;
+    this.j = j;
     this.type = materials.void;
     this.toClear = false;
+  }
+
+  draw() {
+    // Filling the particles
+    if (grid[this.i][this.j].type === materials.wall) {
+      fill(255);
+      rect(this.i * size, this.j * size, size, size);
+    } else if (grid[this.i][this.j].type === materials.sand) {
+      fill(255, 255, 0);
+      rect(this.i * size, this.j * size, size, size);
+    } else if (grid[this.i][this.j].type === materials.fluid) {
+      fill(0, 0, 255);
+      rect(this.i * size, this.j * size, size, size);
+    } else if (grid[this.i][this.j].toClear) {
+      fill(255, 255, 0);
+      rect(this.i * size, this.j * size, size, size);
+    }
   }
 }
 
@@ -113,21 +131,7 @@ function draw() {
           grid[i][j].toClear = true;
         }
       }
-
-      // Filling the particles
-      if (grid[i][j].type === materials.wall) {
-        fill(255);
-        rect(i * size, j * size, size, size);
-      } else if (grid[i][j].type === materials.sand) {
-        fill(255, 255, 0);
-        rect(i * size, j * size, size, size);
-      } else if (grid[i][j].type === materials.fluid) {
-        fill(0, 0, 255);
-        rect(i * size, j * size, size, size);
-      } else if (grid[i][j].toClear) {
-        fill(255, 255, 0);
-        rect(i * size, j * size, size, size);
-      }
+      grid[i][j].draw();
     }
   }
 }

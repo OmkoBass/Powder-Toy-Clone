@@ -13,8 +13,6 @@ class Tile {
     this.j = j;
     this.type = materials.void;
     this.toClear = false;
-    this.thickness = 0;
-    this.velocity = 1;
   }
 
   // Returns true if nothing is below
@@ -60,8 +58,6 @@ class Tile {
     }
     return false;
   }
-
-  changeToSand() {}
 
   simulate() {
     // Moving of the particles

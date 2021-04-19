@@ -13,6 +13,92 @@ class Tile {
     this.j = j;
     this.type = materials.void;
     this.toClear = false;
+    this.thickness = 0;
+    this.velocity = 1;
+  }
+
+  // Returns true if nothing is below
+  BoundsBelow() {
+    if (grid[this.i][this.j + 1].type === materials.void) {
+      return true;
+    }
+    return false;
+  }
+
+  // Returns true if nothing is bottom left
+  BoundsBottomLeft() {
+    if (
+      grid[this.i - 1][this.j + 1].type === materials.void &&
+      grid[this.i - 1][this.j].type === materials.void
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  // Returns true if nothing is bottom right
+  BoundsBottomRight() {
+    if (
+      grid[this.i + 1][this.j + 1].type === materials.void &&
+      grid[this.i + 1][this.j].type === materials.void
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  BoundsLeft() {
+    if (grid[this.i - 1][this.j].type === materials.void) {
+      return true;
+    }
+    return false;
+  }
+
+  BoundsRight() {
+    if (grid[this.i + 1][this.j].type === materials.void) {
+      return true;
+    }
+    return false;
+  }
+
+  changeToSand() {}
+
+  simulate() {
+    // Moving of the particles
+    if (this.type === materials.sand) {
+      if (grid[this.i][this.j].type === materials.sand) {
+        if (this.BoundsBelow()) {
+          grid[this.i][this.j + 1].type = materials.sand;
+          grid[this.i][this.j].toClear = true;
+        } else if (this.BoundsBottomLeft()) {
+          grid[this.i - 1][this.j + 1].type = materials.sand;
+          grid[this.i][this.j].toClear = true;
+        } else if (this.BoundsBottomRight()) {
+          grid[this.i + 1][this.j + 1].type = materials.sand;
+          grid[this.i][this.j].toClear = true;
+        }
+      }
+    } else if (this.type === materials.fluid) {
+      // Moving of liquids
+      if (grid[this.i][this.j].type === materials.fluid) {
+        if (this.BoundsBelow()) {
+          grid[this.i][this.j + 1].type = materials.fluid;
+          grid[this.i][this.j].toClear = true;
+        } else if (this.BoundsBottomLeft()) {
+          grid[this.i - 1][this.j + 1].type = materials.fluid;
+          grid[this.i][this.j].toClear = true;
+        } else if (this.BoundsBottomRight()) {
+          grid[this.i + 1][this.j + 1].type = materials.fluid;
+          grid[this.i][this.j].toClear = true;
+        } else if (this.BoundsLeft()) {
+          grid[this.i - 1][this.j].type = materials.fluid;
+          grid[this.i][this.j].toClear = true;
+        } else if (this.BoundsRight()) {
+          grid[this.i + 1][this.j].type = materials.fluid;
+          grid[this.i][this.j].toClear = true;
+        }
+      }
+    }
   }
 
   draw() {
@@ -86,51 +172,7 @@ function draw() {
         grid[i][j].toClear = false;
       }
 
-      // Moving of the particles
-      if (grid[i][j].type === materials.sand) {
-        if (grid[i][j + 1].type === materials.void) {
-          grid[i][j + 1].type = materials.sand;
-          grid[i][j].toClear = true;
-        } else if (
-          grid[i - 1][j + 1].type === materials.void &&
-          grid[i - 1][j].type === materials.void
-        ) {
-          grid[i - 1][j + 1].type = materials.sand;
-          grid[i][j].toClear = true;
-        } else if (
-          grid[i + 1][j + 1].type === materials.void &&
-          grid[i + 1][j].type === materials.void
-        ) {
-          grid[i + 1][j + 1].type = materials.sand;
-          grid[i][j].toClear = true;
-        }
-      }
-
-      // Moving of liquids
-      if (grid[i][j].type === materials.fluid) {
-        if (grid[i][j + 1].type === materials.void) {
-          grid[i][j + 1].type = materials.fluid;
-          grid[i][j].toClear = true;
-        } else if (
-          grid[i - 1][j + 1].type === materials.void &&
-          grid[i - 1][j].type === materials.void
-        ) {
-          grid[i - 1][j + 1].type = materials.fluid;
-          grid[i][j].toClear = true;
-        } else if (
-          grid[i + 1][j + 1].type === materials.void &&
-          grid[i + 1][j].type === materials.void
-        ) {
-          grid[i + 1][j + 1].type = materials.fluid;
-          grid[i][j].toClear = true;
-        } else if (grid[i - 1][j].type === materials.void) {
-          grid[i - 1][j].type = materials.fluid;
-          grid[i][j].toClear = true;
-        } else if (grid[i + 1][j].type === materials.void) {
-          grid[i + 1][j].type = materials.fluid;
-          grid[i][j].toClear = true;
-        }
-      }
+      grid[i][j].simulate();
       grid[i][j].draw();
     }
   }
